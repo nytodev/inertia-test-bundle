@@ -1,0 +1,26 @@
+services:
+    inertia_symfony.inertia:
+        class: Nytodev\InertiaSymfony\Service\InertiaService
+        public: true
+        arguments:
+            $container: '@service_container'
+            $twig: '@twig'
+            $requestStack: '@request_stack'
+            $projectDir: '%kernel.project_dir%'
+    Nytodev\InertiaSymfony\Service\InertiaService: '@inertia_symfony.inertia'
+
+    inertia_symfony.twig_extension:
+        class: Nytodev\InertiaSymfony\Twig\InertiaSymfonyTwigExtension
+        public: false
+        arguments:
+            $inertiaService: '@inertia_symfony.inertia'
+        tags:
+            - { name: twig.extension }
+
+    inertia_symfony.twig_runtime:
+        class: Nytodev\InertiaSymfony\Twig\InertiaSymfonyRuntime
+        public: false
+        arguments:
+            $inertiaService: '@inertia_symfony.inertia'
+        tags:
+            - { name: twig.runtime }
