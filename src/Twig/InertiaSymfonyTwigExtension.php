@@ -1,16 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Nytodev\InertiaSymfony\Twig;
 
-use Nytodev\InertiaSymfony\Service\InertiaService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class InertiaSymfonyTwigExtension extends AbstractExtension
 {
-
-    public function __construct(private InertiaService $inertiaService)
+    public function __construct()
     {
     }
 

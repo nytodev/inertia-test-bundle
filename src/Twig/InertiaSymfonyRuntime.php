@@ -1,23 +1,26 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Nytodev\InertiaSymfony\Twig;
 
-use Nytodev\InertiaSymfony\Service\InertiaService;
 use Twig\Extension\RuntimeExtensionInterface;
 use Twig\Markup;
 
 final class InertiaSymfonyRuntime implements RuntimeExtensionInterface
 {
-    public function __construct(private InertiaService $inertiaService)
+    public function __construct()
     {
     }
 
-    public function render($page): Markup
+    /**
+     * @param array<string, mixed> $page
+     */
+    public function render(array $page): Markup
     {
-        return new Markup(sprintf(
+        return new Markup(\sprintf(
             '<div id="app" data-page="%s"></div>',
-            htmlspecialchars(json_encode($page))
+            htmlspecialchars(json_encode($page) ?: '{}', \ENT_QUOTES, 'UTF-8')
         ), 'UTF-8');
     }
 

@@ -12,15 +12,11 @@ services:
     inertia_symfony.twig_extension:
         class: Nytodev\InertiaSymfony\Twig\InertiaSymfonyTwigExtension
         public: false
-        arguments:
-            $inertiaService: '@inertia_symfony.inertia'
         tags:
             - { name: twig.extension }
 
     inertia_symfony.twig_runtime:
         class: Nytodev\InertiaSymfony\Twig\InertiaSymfonyRuntime
         public: false
-        arguments:
-            $inertiaService: '@inertia_symfony.inertia'
         tags:
             - { name: twig.runtime }
