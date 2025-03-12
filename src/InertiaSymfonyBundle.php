@@ -17,6 +17,16 @@ final class InertiaSymfonyBundle extends AbstractBundle
             ->children()
                 ->scalarNode('root_view')
                     ->defaultValue('base.html.twig')
+                    ->info('The root view that Inertia.js will render.')
+                ->end()
+                ->arrayNode('ssr')
+                    ->canBeDisabled()
+                    ->children()
+                        ->scalarNode('url')
+                            ->defaultValue('http://localhost:13714/render')
+                            ->info('The URL of the Inertia.js server-side rendering server.')
+                        ->end()
+                    ->end()
                 ->end()
             ->end();
     }
@@ -29,5 +39,9 @@ final class InertiaSymfonyBundle extends AbstractBundle
         $container->import('../config/services.yaml');
 
         $builder->setParameter('inertia_symfony.root_view', $config['root_view']);
+
+        if (isset($config['ssr']) && $config['ssr']['enabled']) {
+            $builder->setParameter('inertia_symfony.ssr.url', $config['ssr']['url']);
+        }
     }
 }
