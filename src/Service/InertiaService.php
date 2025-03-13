@@ -11,7 +11,7 @@ use Twig\Environment;
 
 final class InertiaService implements InertiaServiceInterface
 {
-    protected ?string $rootView = null;
+    protected string $rootView = 'base.html.twig';
 
     /**
      * @var array<string, mixed>
@@ -43,7 +43,7 @@ final class InertiaService implements InertiaServiceInterface
      */
     public function render(string $component, array $props = []): Response
     {
-        $url = $this->requestStack->getCurrentRequest()->getRequestUri();
+        $url = $this->requestStack->getCurrentRequest()?->getRequestUri();
         $page = [
             'component' => $component,
             'props' => array_merge(
