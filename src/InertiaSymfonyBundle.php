@@ -41,6 +41,7 @@ final class InertiaSymfonyBundle extends AbstractBundle
         $builder->setParameter('inertia_symfony.root_view', $config['root_view']);
 
         if (isset($config['ssr']) && $config['ssr']['enabled']) {
+            $builder->setParameter('inertia_symfony.ssr.enabled', true);
             $builder->setParameter('inertia_symfony.ssr.url', $config['ssr']['url']);
         }
     }

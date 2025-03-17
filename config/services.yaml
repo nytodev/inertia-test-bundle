@@ -9,6 +9,14 @@ services:
             $projectDir: '%kernel.project_dir%'
     Nytodev\InertiaSymfony\Service\InertiaService: '@inertia_symfony.inertia'
 
+    inertia_symfony.gateway:
+        class: Nytodev\InertiaSymfony\Ssr\HttpGateway
+        public: false
+        arguments:
+            $container: '@service_container'
+            $client: '@http_client'
+    Nytodev\InertiaSymfony\Ssr\GatewayInterface: '@inertia_symfony.gateway'
+
     inertia_symfony.twig_extension:
         class: Nytodev\InertiaSymfony\Twig\InertiaSymfonyTwigExtension
         public: false
@@ -18,5 +26,7 @@ services:
     inertia_symfony.twig_runtime:
         class: Nytodev\InertiaSymfony\Twig\InertiaSymfonyRuntime
         public: false
+        arguments:
+            $gateway: '@inertia_symfony.gateway'
         tags:
             - { name: twig.runtime }
