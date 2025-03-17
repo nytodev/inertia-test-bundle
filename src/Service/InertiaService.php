@@ -43,7 +43,9 @@ final class InertiaService implements InertiaServiceInterface
      */
     public function render(string $component, array $props = []): Response
     {
-        $url = $this->requestStack->getCurrentRequest()?->getRequestUri();
+        $request = $this->requestStack->getCurrentRequest();
+        $url = $request?->getRequestUri();
+
         $page = [
             'component' => $component,
             'props' => array_merge(
