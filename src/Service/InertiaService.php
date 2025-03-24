@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Nytodev\InertiaSymfony\Service;
 
-use App\Service\InertiaHeader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -87,5 +87,16 @@ final class InertiaService implements InertiaServiceInterface
         }
 
         return null;
+    }
+
+    public function getLocation(string $url): Response
+    {
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($request->headers->has(InertiaHeader::XInertia->value)) {
+            return new Response('', Response::HTTP_CONFLICT, [InertiaHeader::XInertiaLocation->value => $url]);
+        }
+
+        return new RedirectResponse($url);
     }
 }

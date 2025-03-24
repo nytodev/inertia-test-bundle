@@ -14,4 +14,6 @@ interface InertiaServiceInterface
     public function render(string $component, array $props = []): Response;
 
     public function getVersion(): ?string;
+
+    public function getLocation(string $url): Response;
 }

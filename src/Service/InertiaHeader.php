@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace Nytodev\InertiaSymfony\Service;
 
 enum InertiaHeader: string
 {
