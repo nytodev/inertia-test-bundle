@@ -12,4 +12,6 @@ interface InertiaServiceInterface
      * @param array<string, mixed> $props
      */
     public function render(string $component, array $props = []): Response;
+
+    public function getVersion(): ?string;
 }

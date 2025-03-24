@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nytodev\InertiaSymfony\Service;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -56,6 +57,10 @@ final class InertiaService implements InertiaServiceInterface
             'version' => $this->getVersion(),
         ];
 
+        if ($request?->headers->has('X-Inertia')) {
+            return new JsonResponse($page, 200, ['X-Inertia' => 'true']);
+        }
+
         return new Response(
             $this->twig->render($this->rootView, ['page' => $page]),
             Response::HTTP_OK
@@ -64,18 +69,19 @@ final class InertiaService implements InertiaServiceInterface
 
     public function getVersion(): ?string
     {
-        if ($this->container->hasParameter('app.asset_url')) {
-            $assetUrl = $this->container->getParameter('app.asset_url');
-            if (\is_string($assetUrl) && filter_var($assetUrl, \FILTER_VALIDATE_URL)) {
-                return md5($assetUrl);
-            }
-        }
-
         if (file_exists($manifest = $this->projectDir.'/public/mix-manifest.json')) {
             return md5_file($manifest) !== false ? md5_file($manifest) : null;
         }
 
+        if (file_exists($manifest = $this->projectDir.'/public/.vite/mix-manifest.json')) {
+            return md5_file($manifest) !== false ? md5_file($manifest) : null;
+        }
+
         if (file_exists($manifest = $this->projectDir.'/public/build/manifest.json')) {
+            return md5_file($manifest) !== false ? md5_file($manifest) : null;
+        }
+
+        if (file_exists($manifest = $this->projectDir.'/public/build/.vite/manifest.json')) {
             return md5_file($manifest) !== false ? md5_file($manifest) : null;
         }
 
