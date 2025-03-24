@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nytodev\InertiaSymfony\Service;
 
+use App\Service\InertiaHeader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -57,8 +58,8 @@ final class InertiaService implements InertiaServiceInterface
             'version' => $this->getVersion(),
         ];
 
-        if ($request?->headers->has('X-Inertia')) {
-            return new JsonResponse($page, 200, ['X-Inertia' => 'true']);
+        if ($request?->headers->has(InertiaHeader::XInertia->value)) {
+            return new JsonResponse($page, 200, [InertiaHeader::XInertia->value => 'true']);
         }
 
         return new Response(

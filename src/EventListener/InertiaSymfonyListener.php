@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nytodev\InertiaSymfony\EventListener;
 
+use App\Service\InertiaHeader;
 use Nytodev\InertiaSymfony\Service\InertiaServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,7 +22,7 @@ final class InertiaSymfonyListener implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        if (!$request->headers->has('X-Inertia')) {
+        if (!$request->headers->has(InertiaHeader::XInertia->value)) {
             return;
         }
 
@@ -31,15 +32,15 @@ final class InertiaSymfonyListener implements EventSubscriberInterface
     public function onKernelResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();
-        if (!$request->headers->has('X-Inertia')) {
+        if (!$request->headers->has(InertiaHeader::XInertia->value)) {
             return;
         }
 
         $response = $event->getResponse();
-        $response->headers->set('Vary', 'X-Inertia');
+        $response->headers->set('Vary', InertiaHeader::XInertia->value);
 
-        if ($request->getMethod() === Request::METHOD_GET && $request->headers->get('X-Inertia-Version') !== $this->inertiaService->getVersion()) {
-            $response->headers->set('X-Inertia-Location', $request->getUri());
+        if ($request->getMethod() === Request::METHOD_GET && $request->headers->get(InertiaHeader::XInertiaVersion->value) !== $this->inertiaService->getVersion()) {
+            $response->headers->set(InertiaHeader::XInertiaLocation->value, $request->getUri());
         }
 
         if ($response->isOk() && empty($response->getContent())) {
